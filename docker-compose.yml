@@ -1,0 +1,45 @@
+services:
+
+  postgres:
+    image: postgres:15
+
+    container_name: larfeliz_db
+
+    environment:
+      POSTGRES_USER: larfeliz_user
+      POSTGRES_PASSWORD: larfeliz_password
+      POSTGRES_DB: db_larfeliz
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - larfeliz_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+
+    container_name: larfeliz_pgadmin
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@larfeliz.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+    ports:
+      - "5050:80"
+
+    depends_on:
+      - postgres
+
+    networks:
+      - larfeliz_network
+
+volumes:
+  postgres_data:
+
+networks:
+  larfeliz_network:
+    driver: bridge
